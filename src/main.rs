@@ -5,6 +5,7 @@ use dioxus::prelude::*;
 // user files
 mod pages;
 mod router;
+mod components;
 
 fn main() {
     // launch the web app
