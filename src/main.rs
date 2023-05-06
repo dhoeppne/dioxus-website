@@ -2,6 +2,10 @@
 // import the prelude to get access to the `rsx!` macro and the `Scope` and `Element` types
 use dioxus::prelude::*;
 
+mod components;
+
+pub use crate::components::Nav;
+
 fn main() {
     // launch the web app
     dioxus_web::launch(App);
@@ -14,13 +18,7 @@ fn App(cx: Scope) -> Element {
         color: red
     "#;
     cx.render(rsx! {
-        nav {
-            a {
-                href: "https://www.google.com/",
-                target: "_blank",
-                "Google"
-            }
-        }
+        Nav::Nav {},
         header {
             "This is a header"
         },
