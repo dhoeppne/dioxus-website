@@ -2,7 +2,9 @@
 use dioxus::prelude::*;
 
 pub fn Contact(cx: Scope) -> Element {
-  cx.render(rsx!(p {
+  cx.render(rsx!(
+    p {
       "Contact"
-  }))
+    }
+  ))
 }

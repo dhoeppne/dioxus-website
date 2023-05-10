@@ -9,9 +9,8 @@ use crate::components::navbar;
 pub fn router(cx: Scope) -> Element {
   cx.render(rsx!{
     Router {
-      p { "This is inside the router" }
       navbar::navbar {}
-      Route { to: "/about", About {}}
+      Route { to: "/", About {}}
       Route { to: "/contact", Contact {}}
       Route { to: "/work", Work {}}
       Route { to: "/experience", Experience {}}

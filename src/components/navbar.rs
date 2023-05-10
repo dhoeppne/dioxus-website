@@ -5,7 +5,7 @@ use dioxus_router::Link;
 pub fn navbar(cx: Scope) -> Element {
     cx.render(rsx! {
         ul {
-            Link { to: "/about", "About"}
+            Link { to: "/", "About"}
             br {}
             Link { to: "/experience", "Experience"}
             br {}
