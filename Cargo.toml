@@ -6,22 +6,19 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+axum = { version = "0.6.20", optional = true }
 dioxus = "0.4.0"
-dioxus-fullstack = "0.4.1"
+dioxus-fullstack = { version = "0.4.1", features = ["router"] }
 dioxus-router = "0.4.1"
+dioxus-web = { version = "0.4.0", features = ["hydrate"], optional = true }
 serde = "1.0.188"
+web-sys = { version = "0.3.64", features = ["console"] }
 
 [features]
 default = []
-ssr = []
-web = []
-
-[dependencies.web-sys]
-version = "0.3"
-features = [
-  "console",
-]
+ssr = ["axum", "dioxus-fullstack/axum"]
+web = ["dioxus-fullstack/web", "dioxus-router/web"]
 
 [package.metadata.scripts]
-build = "dx build --features web"
+build = "dx build --features web --release"
 ssr = "cargo run-script build && cargo run --features ssr --release"

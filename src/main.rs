@@ -1,39 +1,98 @@
-#![allow(non_snake_case, unused)]
+//! Run with:
+//!
+//! ```sh
+//! dx build --features web --release
+//! cargo run --features ssr --release
+//! ```
+
+#![allow(non_snake_case)]
+
 use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 use dioxus_router::prelude::*;
-use serde::{Deserialize, Serialize};
-
-#[macro_use]
-mod logger;
-
-mod router;
-mod Pages;
-
-use Pages::{Home::Home, Err404::Err404, Contact::Contact};
-
-/// An enum of all of the possible routes in the app.
-#[derive(Clone, Routable, Debug, PartialEq, Serialize, Deserialize)]
-pub enum Route {
-    // The home page is at the / route
-    #[route("/")]
-    Contact {},
-    // #[route("/contact")]
-    // Contact {},
-    // If the name of the component and variant are the same you can omit the component and props name
-    // If they are different you can specify them like this:
-    // #[route("/", ComponentName, PropsName)]
-    #[route("/:..route")]
-    Err404 { route: Vec<String> },
-}
 
 fn main() {
-    LaunchBuilder::new(app).launch();
+    let config = LaunchBuilder::<FullstackRouterConfig<Route>>::router();
+    #[cfg(feature = "ssr")]
+    config
+        .incremental(
+            IncrementalRendererConfig::default()
+                .invalidate_after(std::time::Duration::from_secs(120)),
+        )
+        .launch();
+
+    #[cfg(not(feature = "ssr"))]
+    config.launch();
 }
 
-fn app(cx: Scope) -> Element {
+#[derive(Clone, Routable, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+enum Route {
+    #[route("/")]
+    Home {},
+    #[route("/blog/:id")]
+    Blog { id: i32 },
+}
+
+#[inline_props]
+fn Blog(cx: Scope, id: i32) -> Element {
     render! {
-        Router::<Route> {}
+        Link { to: Route::Home {}, "Go to counter" }
+        table {
+            tbody {
+                for _ in 0..*id {
+                    tr {
+                        for _ in 0..*id {
+                            td { "hello world!" }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
+#[inline_props]
+fn Home(cx: Scope) -> Element {
+    let mut count = use_state(cx, || 0);
+    let text = use_state(cx, || "...".to_string());
+
+    cx.render(rsx! {
+        Link {
+            to: Route::Blog {
+                id: *count.get()
+            },
+            "Go to blog"
+        }
+        div {
+            h1 { "High-Five counter: {count}" }
+            button { onclick: move |_| count += 1, "Up high!" }
+            button { onclick: move |_| count -= 1, "Down low!" }
+            button {
+                onclick: move |_| {
+                    to_owned![text];
+                    async move {
+                        if let Ok(data) = get_server_data().await {
+                            println!("Client received: {}", data);
+                            text.set(data.clone());
+                            post_server_data(data).await.unwrap();
+                        }
+                    }
+                },
+                "Run server function!"
+            }
+            "Server said: {text}"
+        }
+    })
+}
+
+#[server(PostServerData)]
+async fn post_server_data(data: String) -> Result<(), ServerFnError> {
+    println!("Server received: {}", data);
+
+    Ok(())
+}
+
+#[server(GetServerData)]
+async fn get_server_data() -> Result<String, ServerFnError> {
+    Ok("Hello from the server!".to_string())
+}
