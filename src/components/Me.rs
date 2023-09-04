@@ -2,8 +2,7 @@
 use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
 
-
-pub fn Home(cx: Scope) -> Element {
+pub fn Me(cx: Scope) -> Element {
     let mut count = use_state(cx, || 0);
     let text = use_state(cx, || "...".to_string());
 

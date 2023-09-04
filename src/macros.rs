@@ -17,8 +17,8 @@ macro_rules! log {
 //   }
 // }
 
-// macro_rules! error {
-//   ( $( $t:tt )* ) => {
-//       web_sys::console::error_1(&format!( $( $t )* ).into())
-//   }
-// }
+macro_rules! error {
+  ( $( $t:tt )* ) => {
+      web_sys::console::error_1(&format!( $( $t )* ).into())
+  }
+}

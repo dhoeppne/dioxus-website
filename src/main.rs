@@ -1,14 +1,14 @@
 #![allow(non_snake_case)]
 
-use dioxus::prelude::*;
 use dioxus_fullstack::prelude::*;
-use dioxus_router::prelude::*;
 
 #[macro_use]
-mod logger;
+mod macros;
 
+mod Router;
 mod components;
-use components::{ Err404::Err404, Home::Home, Contact::Contact };
+
+use Router::Route;
 
 fn main() {
     let config = LaunchBuilder::<FullstackRouterConfig<Route>>::router();
@@ -22,16 +22,6 @@ fn main() {
 
     #[cfg(not(feature = "ssr"))]
     config.launch();
-}
-
-#[derive(Clone, Routable, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
-enum Route {
-    #[route("/")]
-    Home {},
-    #[route("/contact")]
-    Contact {},
-    #[route("/:..route")]
-    Err404 { route: Vec<String> },
 }
 
 // #[inline_props]
