@@ -16,7 +16,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Cache Rust Dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{ env.HOME }}/.cargo/registry
+          ${{ env.HOME }}/.cargo/git
+        key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+    - name: Restore Cached Rust Dependencies
+      run: |
+        if [ -d ${{ env.HOME }}/.cargo/registry ]; then
+          echo "Using cached Rust dependencies"
+        fi
+      id: restore-cache
     - name: Install dependencies
+      if: steps.restore-cache.outputs.cache-hit != 'true'
       run: |
         cargo install dioxus-cli
         rustup target add wasm32-unknown-unknown
