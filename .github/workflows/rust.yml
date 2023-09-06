@@ -16,7 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: cargo install dioxus-cli
     - name: Build
-      run: cargo build --verbose
+      run: dx build --features web --release
     - name: Run tests
       run: cargo test --verbose
