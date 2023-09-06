@@ -17,7 +17,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Install dependencies
-      run: cargo install dioxus-cli
+      run: |
+        cargo install dioxus-cli
+        rustup target add wasm32-unknown-unknown
     - name: Build
       run: dx build --features web --release
     - name: Run tests
