@@ -7,7 +7,12 @@ pub fn Me(cx: Scope) -> Element {
     let text = use_state(cx, || "...".to_string());
 
     cx.render(rsx! {
-
+        section {
+            "Hi, my name is"
+            h1 { "David Hoeppner"}
+            h1 {"I build things for people who build things."}
+            "I’m a Canadian full-stack software developer specializing in developer operations and tooling. Currently, I’m focused on building out the Search Experience at Workday. This website serves as a portfolio of my work and a proof of concept of Rust for the Web."
+        }
         h1 { "High-Five counter: {count}" }
         button { onclick: move |_| count += 1, "Up high!" }
         button { onclick: move |_| count -= 1, "Down low!" }

@@ -20,5 +20,7 @@ ssr = ["axum", "dioxus-fullstack/axum"]
 web = ["dioxus-fullstack/web", "dioxus-router/web"]
 
 [package.metadata.scripts]
-build = "dx build --features web --release"
+build = "dx build --features web"
+build_release = "dx build --features web --release"
 ssr = "cargo run-script build && cargo run --features ssr --release"
+ssr_hot_reload = "cargo run-script build && dx serve --features ssr --hot-reload --platform desktop"

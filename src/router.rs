@@ -33,14 +33,20 @@ fn NavBarFooter(cx: Scope) -> Element {
                         to: Route::Me {},
                         "Me"
                     }
-                    Link {
-                        to: Route::Contact {},
-                        "Contact"
-                    }
+                }
+                li {
                     Link {
                         to: Route::Projects {},
                         "Projects"
                     }
+                }
+                li {
+                    Link {
+                        to: Route::Contact {},
+                        "Contact"
+                    }
+                }
+                li {
                     Link {
                         to: Route::Jobs {},
                         "Jobs"
