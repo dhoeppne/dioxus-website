@@ -8,10 +8,9 @@ mod macros;
 mod Router;
 mod components;
 
-use Router::Route;
 
 fn main() {
-    let config = LaunchBuilder::<FullstackRouterConfig<Route>>::router();
+    let config = LaunchBuilder::<FullstackRouterConfig<crate::Router::Route>>::router();
     #[cfg(feature = "ssr")]
     config
         .incremental(
