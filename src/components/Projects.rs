@@ -4,8 +4,10 @@ use dioxus::prelude::*;
 
 pub fn Projects(cx: Scope) -> Element {
   cx.render(rsx!(
-    p {
-      "Projects"
-    }
+    section {
+      "These are the "
+      h1 { "Projects" }
+      "I’m currently working on."
+  }
   ))
 }
